@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using API_FADSI.Models;
 using API_FADSI.Services;
+using Google.Maps;
+using Google.Maps.Geocoding;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -128,6 +130,44 @@ namespace API_FADSI.Controllers
                 return NotFound();
 
             return user;
+        }
+
+
+        //TEST ONLY!!! REMOVE LATER**********************************
+        [Route(USER_URL + "/testmaps")]
+        [HttpGet]
+        public ActionResult<ExpandoObject> TestMaps()
+        {
+            //always need to use YOUR_API_KEY for requests.  Do this in App_Start.
+            GoogleSigned.AssignAllServices(new GoogleSigned("AIzaSyBrQ-Pb3As0dKkt1iPsxL9IOr-Nfk3E1Cc"));
+
+            var request = new GeocodingRequest();
+            request.Address = "San Isidro de El Guarco, Cartago";
+            var response = new GeocodingService().GetResponse(request);
+
+            //The GeocodingService class submits the request to the API web service, and returns the
+            //response strongly typed as a GeocodeResponse object which may contain zero, one or more results.
+
+            dynamic data = new ExpandoObject();
+            //Assuming we received at least one result, let's get some of its properties:
+            if (response.Status == ServiceResponseStatus.Ok && response.Results.Count() > 0)
+            {
+                var result = response.Results.First();
+
+                //Console.WriteLine("Full Address: " + result.FormattedAddress);         // "1600 Pennsylvania Ave NW, Washington, DC 20500, USA"
+                data.fullAddress = result.FormattedAddress;
+                //Console.WriteLine("Latitude: " + result.Geometry.Location.Latitude);   // 38.8976633
+                data.latitude = result.Geometry.Location.Latitude;
+                //Console.WriteLine("Longitude: " + result.Geometry.Location.Longitude); // -77.0365739
+                data.longitude = result.Geometry.Location.Longitude;
+                //Console.WriteLine();
+                return data;
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status409Conflict);
+                //Console.WriteLine("Unable to geocode.  Status={0} and ErrorMessage={1}", response.Status, response.ErrorMessage);
+            }
         }
 
     }

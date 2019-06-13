@@ -49,7 +49,7 @@ namespace API_FADSI.Services
                         ids[i].Id.Length - CONSTANTS_PLACE.ID_PREFIX.Length)));
                 }
                 intIds.Sort();
-                Debug.WriteLine("***********TEST***************");
+
                 for (int i = 0, j=0; i<=intIds.Count; ++i)
                 {
                     if (i == intIds.Count) { nextId = j; break; }
