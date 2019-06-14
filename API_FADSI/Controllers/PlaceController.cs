@@ -126,6 +126,11 @@ namespace API_FADSI.Controllers
         }
 
 
+        /// <summary>
+        /// Returns a list of places and distances between each one
+        /// </summary>
+        /// <param name="pPlaceId">Id of the current place</param>
+        /// <returns></returns>
         [Route(PLACE_URL + "/nearby/{pPlaceId}")]
         [HttpGet]
         public ActionResult<List<dynamic>> NearbyPlaces(string pPlaceId)

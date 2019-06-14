@@ -156,6 +156,11 @@ namespace API_FADSI.Services
         }
 
 
+        /// <summary>
+        /// Obtains all the other places and the distance between the current place
+        /// </summary>
+        /// <param name="pPlaceId">Id of the current place</param>
+        /// <returns></returns>
         public List<dynamic> NearbyPlaces(string pPlaceId)
         {
             List<dynamic> nearbyPlaces = new List<dynamic>();

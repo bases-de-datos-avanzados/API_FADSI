@@ -76,7 +76,7 @@ namespace API_FADSI.Models
     public class RelatedPlace
     {
         [BsonElement(CONSTANTS_ORDER.SUB_RELATED_ID)]
-        public string PlaceId { get; set; }
+        public string Place_Id { get; set; }
     }
 
 

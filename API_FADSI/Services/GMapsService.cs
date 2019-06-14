@@ -118,7 +118,8 @@ namespace API_FADSI.Services
                 place.rating = result.Rating;
                 place.schedule = GetOpeningHours(result);
                 place.website = result.Website;
-                place.photo = RequestPlacePhoto(result.Photos[0].PhotoReference);
+                place.photo = "";
+                //place.photo = RequestPlacePhoto(result.Photos[0].PhotoReference);
                 return place;
             }
             else return null;
