@@ -139,7 +139,7 @@ namespace API_FADSI.Controllers
         public ActionResult<ExpandoObject> TestMaps()
         {
             //always need to use YOUR_API_KEY for requests.  Do this in App_Start.
-            GoogleSigned.AssignAllServices(new GoogleSigned("AIzaSyBrQ-Pb3As0dKkt1iPsxL9IOr-Nfk3E1Cc"));
+            //GoogleSigned.AssignAllServices(new GoogleSigned("AIzaSyBrQ-Pb3As0dKkt1iPsxL9IOr-Nfk3E1Cc"));
 
             var request = new GeocodingRequest();
             request.Address = "San Isidro de El Guarco, Cartago";

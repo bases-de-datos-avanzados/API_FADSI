@@ -4,6 +4,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -108,6 +109,7 @@ namespace API_FADSI.Services
             try
             {
                 pProduct.Id = GetProductId();
+                Debug.WriteLine("ID GENERADO: " + pProduct.Id);
                 _products.InsertOne(pProduct);
             }
             catch (Exception e)

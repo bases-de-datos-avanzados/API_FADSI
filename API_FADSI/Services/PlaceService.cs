@@ -1,4 +1,6 @@
 ﻿using API_FADSI.Models;
+using Google.Maps;
+using Google.Maps.DistanceMatrix;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -150,7 +152,57 @@ namespace API_FADSI.Services
         public List<Place> PlacesByType(int pType)
         {
             var filter = Builders<Place>.Filter.Eq(CONSTANTS_PLACE.TYPE, CONSTANTS_PLACE.PLACE_TYPE[pType]);
-            return _places.Find(filter).ToList<Place>();
+            return _places.Find(filter).ToList();
+        }
+
+
+        public List<dynamic> NearbyPlaces(string pPlaceId)
+        {
+            List<dynamic> nearbyPlaces = new List<dynamic>();
+            var queryCheck = Builders<Place>.Filter.Eq(CONSTANTS_PLACE.ID, pPlaceId);
+            Place origin = _places.Find(queryCheck).FirstOrDefault();
+            if (origin != null)
+            {
+                List<Place> registeredPlaces;
+                var query = new BsonDocument { { CONSTANTS_PLACE.ID, new BsonDocument { { "$ne", pPlaceId } } } };
+                registeredPlaces = _places.Find(query).ToList();
+
+                foreach (Place place in registeredPlaces)
+                {
+                    dynamic data = new ExpandoObject();
+                    dynamic distance = DistanceByCoordinates(origin.Latitude, origin.Longitude, 
+                        place.Latitude, place.Longitude);
+                    data.id = place.Id;
+                    data.name = place.Name;
+                    data.meters = distance.meters;
+                    data.kilometers = distance.kilometers;
+                    nearbyPlaces.Add(data);
+                }
+                return nearbyPlaces;
+            }
+            else return null;
+            
+        }
+
+
+
+        private ExpandoObject DistanceByCoordinates(double pLatitude1, double pLongitude1, double pLatitude2, double pLongitude2)
+        {
+            DistanceMatrixRequest request = new DistanceMatrixRequest();
+            request.AddDestination(new LatLng(latitude: pLatitude2, longitude: pLongitude2));
+            request.AddOrigin(new LatLng(latitude: pLatitude1, longitude: pLongitude1));
+
+            request.Mode = TravelMode.driving;
+
+            DistanceMatrixResponse response = new DistanceMatrixService().GetResponse(request);
+            dynamic data = new ExpandoObject();
+            if (response.Status == ServiceResponseStatus.Ok)
+            {
+                data.meters = response.Rows[0].Elements[0].distance.Value;
+                data.kilometers = response.Rows[0].Elements[0].distance.Text;
+                return data;
+            }
+            else return null;
         }
 
     }

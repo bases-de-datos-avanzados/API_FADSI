@@ -46,10 +46,10 @@ namespace API_FADSI.Models
         public string Description { get; set; }
 
         [BsonElement(CONSTANTS_PLACE.LATITUDE)]
-        public string Latitude { get; set; }
+        public double Latitude { get; set; }
 
         [BsonElement(CONSTANTS_PLACE.LONGITUDE)]
-        public string Longitude { get; set; }
+        public double Longitude { get; set; }
 
         [BsonElement(CONSTANTS_PLACE.ADDRESS)]
         public string Address { get; set; }

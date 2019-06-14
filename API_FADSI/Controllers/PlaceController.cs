@@ -126,5 +126,13 @@ namespace API_FADSI.Controllers
         }
 
 
+        [Route(PLACE_URL + "/nearby/{pPlaceId}")]
+        [HttpGet]
+        public ActionResult<List<dynamic>> NearbyPlaces(string pPlaceId)
+        {
+            return _placeService.NearbyPlaces(pPlaceId);
+        }
+
+
     }
 }
