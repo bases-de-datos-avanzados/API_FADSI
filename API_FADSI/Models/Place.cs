@@ -24,7 +24,14 @@ namespace API_FADSI.Models
         public const string WEBSITE = "website";
         public const string PHOTO = "photo";
         public const string STAFF_AMOUNT = "staffAmount";
-        public const string PRODUCTS = "products";
+
+        public static readonly Dictionary<int, string> PLACE_TYPE = new Dictionary<int, string>() {
+            {1, "Restaurant" },
+            {2, "Supermarket" },
+            {3, "Drugstore" },
+            {4, "Mechanic" },
+            {5, "Bar" }
+        }; 
     }
 
     public class Place
@@ -54,7 +61,7 @@ namespace API_FADSI.Models
         public string Phone { get; set; } = "";
 
         [BsonElement(CONSTANTS_PLACE.RATING)]
-        public int Rating { get; set; } = -1;
+        public float Rating { get; set; } = 0.0f;
 
         [BsonElement(CONSTANTS_PLACE.SCHEDULE)]
         public string Schedule { get; set; } = "";
@@ -67,8 +74,5 @@ namespace API_FADSI.Models
 
         [BsonElement(CONSTANTS_PLACE.STAFF_AMOUNT)]
         public int StaffAmount { get; set; }
-
-        //[BsonElement(CONSTANTS_PLACE.PRODUCTS)]
-        //public List<Product> Products { get; set; }
     }
 }

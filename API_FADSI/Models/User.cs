@@ -11,7 +11,7 @@ namespace API_FADSI.Models
     {
         public const string COLLECTION_USER = "User";
         public const string ID = "_id";
-        public const string FIRSTNAME = "firstName";
+        public const string FIRSTNAME = "name";
         public const string LASTNAME = "lastName";
         public const string BIRTHDAY = "birthday";
         public const string PHONE = "phone";
@@ -19,7 +19,6 @@ namespace API_FADSI.Models
         public const string USER_NAME = "userName";
         public const string PASS = "pass";
         public const string USER_TYPE = "userType";
-        public const string ORDERS = "orders";
     }
 
     public class User
@@ -50,8 +49,5 @@ namespace API_FADSI.Models
 
         [BsonElement(CONSTANTS_USER.USER_TYPE)]
         public string UserType { get; set; }
-
-        //[BsonElement(CONSTANTS_USER.ORDERS)]
-        //public List<Order> Orders { get; set; }
     }
 }

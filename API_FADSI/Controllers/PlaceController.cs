@@ -113,5 +113,18 @@ namespace API_FADSI.Controllers
         }
 
 
+        /// <summary>
+        /// Returns the list of all places of the specified type
+        /// </summary>
+        /// <param name="pType">Integer that represents the type of place</param>
+        /// <returns></returns>
+        [Route(PLACE_URL + "/type/{pType}")]
+        [HttpGet]
+        public ActionResult<List<Place>> PlacesByType(int pType)
+        {
+            return _placeService.PlacesByType(pType);
+        }
+
+
     }
 }

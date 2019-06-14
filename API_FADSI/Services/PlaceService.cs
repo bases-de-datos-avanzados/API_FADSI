@@ -141,5 +141,17 @@ namespace API_FADSI.Services
             _places.DeleteOne(place => place.Id == pId);
         }
 
+
+        /// <summary>
+        /// Obtains all the documents in the collection "Place" with a matching "type" field
+        /// </summary>
+        /// <param name="pType">Integer that represents the type of place</param>
+        /// <returns></returns>
+        public List<Place> PlacesByType(int pType)
+        {
+            var filter = Builders<Place>.Filter.Eq(CONSTANTS_PLACE.TYPE, CONSTANTS_PLACE.PLACE_TYPE[pType]);
+            return _places.Find(filter).ToList<Place>();
+        }
+
     }
 }
