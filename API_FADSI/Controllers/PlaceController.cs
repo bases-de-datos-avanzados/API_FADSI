@@ -62,14 +62,14 @@ namespace API_FADSI.Controllers
         /// <returns>Http status code: 201 if successful, 409 if there is an error</returns>
         [Route(PLACE_URL + "/create")]
         [HttpPost]
-        public IActionResult Create(Place pPlace)
+        public ActionResult<dynamic> Create(Place pPlace)
         {
-            int result = _placeService.Create(pPlace);
+            dynamic result = _placeService.Create(pPlace);
 
-            if (result < 0)
+            if (result.status < 0)
                 return StatusCode(StatusCodes.Status409Conflict);
 
-            return StatusCode(StatusCodes.Status201Created);
+            return result;
         }
 
 
@@ -136,6 +136,33 @@ namespace API_FADSI.Controllers
         public ActionResult<List<dynamic>> NearbyPlaces(string pPlaceId)
         {
             return _placeService.NearbyPlaces(pPlaceId);
+        }
+
+
+        /// <summary>
+        /// Returns a list of places with matching name
+        /// </summary>
+        /// <param name="pPlaceName">Place name</param>
+        /// <returns></returns>
+        [Route(PLACE_URL + "/name/{pPlaceName}")]
+        [HttpGet]
+        public ActionResult<List<Place>> SearchByName(string pPlaceName)
+        {
+            return _placeService.SearchByName(pPlaceName);
+        }
+
+
+        /// <summary>
+        /// Return a list of places inside radio of another place
+        /// </summary>
+        /// <param name="pPlaceId">Origin place id</param>
+        /// <param name="pRadio">Radio</param>
+        /// <returns></returns>
+        [Route(PLACE_URL + "/insideRadio/{pPlaceId}/{pRadio}")]
+        [HttpGet]
+        public ActionResult<List<dynamic>> InsideRadio([FromRoute] string pPlaceId, [FromRoute] int pRadio)
+        {
+            return _placeService.NearRadio(pPlaceId, pRadio);
         }
 
 

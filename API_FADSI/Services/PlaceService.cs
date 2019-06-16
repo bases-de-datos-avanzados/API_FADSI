@@ -94,8 +94,11 @@ namespace API_FADSI.Services
         /// </summary>
         /// <param name="pPlace">New place to be created</param>
         /// <returns>0 if successful, -1 if there is an error</returns>
-        public int Create(Place pPlace)
+        public dynamic Create(Place pPlace)
         {
+            dynamic result = new ExpandoObject();
+            result.placeId = "error";
+            result.status = 1;
             try
             {
                 pPlace.Id = GetPlaceId();
@@ -103,10 +106,11 @@ namespace API_FADSI.Services
             }
             catch (Exception e)
             {
-                return -1;
+                result.status = -1;
             }
 
-            return 0;
+            result.placeId = pPlace.Id;
+            return result;
         }
 
 
@@ -209,6 +213,42 @@ namespace API_FADSI.Services
             }
             else return null;
         }
+
+
+        /// <summary>
+        /// Obtains a list of places with matching "name" field
+        /// </summary>
+        /// <param name="pPlaceName">Name of the place</param>
+        /// <returns></returns>
+        public List<Place> SearchByName(string pPlaceName)
+        {
+            var filter = Builders<Place>.Filter.Eq(CONSTANTS_PLACE.NAME, pPlaceName);
+            return _places.Find(filter).ToList();
+        }
+
+
+
+        /// <summary>
+        /// Obtains all the places inside a give radio of another place
+        /// </summary>
+        /// <param name="pPlaceId">Origin place id</param>
+        /// <param name="pRadio">Radio</param>
+        /// <returns></returns>
+        public List<dynamic> NearRadio(string pPlaceId, int pRadio)
+        {
+            List<dynamic> distanceInfo = NearbyPlaces(pPlaceId);
+            List<dynamic> insideRadio = new List<dynamic>();
+
+            foreach(dynamic place in distanceInfo)
+            {
+                if (place.meters <= pRadio)
+                    insideRadio.Add(place);
+            }
+            if (insideRadio.Count != 0)
+                return insideRadio;
+            else return null;
+        }
+
 
     }
 }
